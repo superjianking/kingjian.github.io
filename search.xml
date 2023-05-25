@@ -56,33 +56,6 @@
     
     
     <entry>
-      <title>初识WEB前端(基础知识) 一</title>
-      <link href="/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86)%20%E4%B8%80/"/>
-      <url>/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86)%20%E4%B8%80/</url>
-      
-        <content type="html"><![CDATA[<p>通过笔记整理<a href="https://baike.baidu.com/item/HTML5/4234903?fr=aladdin">HTML5</a>的介绍</p><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h3 id="计算机"><a href="#计算机" class="headerlink" title="计算机"></a>计算机</h3><p>​ 认识 HTML，我们需要先认识它的运行载体，大家都不陌生，<strong>计算机（computer）</strong>，计算机又是由<strong>显示器</strong>，<strong>主机箱</strong>组成，机箱内包含了计算机的核心硬件，有<strong>主板</strong>、<strong>CPU</strong>、<strong>内存条</strong>、<strong>硬盘</strong>、<strong>电源模块</strong>、<strong>网卡</strong>、<strong>光驱</strong>、<strong>散热风扇</strong>、<strong>声卡</strong> · · ·</p><p>​ 这些都称之为硬件，最主要的还是计算机的软件：<strong>系统</strong>，目前主流的系统就是常见的<strong>Windows 系统</strong>和<strong>MacOS</strong>(苹果电脑操作系统)，对于开发的小伙伴来说还有熟悉的<strong>LIinux 系统</strong>，我们可以大概的把电子产品分为两类：<strong>硬件</strong>和<strong>软件</strong>，硬件已经介绍了，而软件在我们的生活中是形影不离的；比如微信、支付宝、美团、高德、淘宝、京东这些主流的生活必备软件，这些软件的制作开发就会用到 CSS、JS、Java 这些强大的开发语言进行美化和开发。详细信息如下：</p><h6 id=""><a href="#" class="headerlink" title=""></a></h6><h1 id="计算机基础"><a href="#计算机基础" class="headerlink" title="计算机基础"></a>计算机基础</h1><h3 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h3><p>​ 这里给大家展示的是一些常用的快捷键方法</p><p><kbd>Ctrl</kbd>+ <kbd>A</kbd> <strong>全选</strong></p><p><kbd>Ctrl</kbd>+ <kbd>C</kbd> <strong>复制</strong></p><p><kbd>Ctrl</kbd>+ <kbd>V</kbd> <strong>粘贴</strong></p><p><kbd>Ctrl</kbd>+ <kbd>X</kbd> <strong>剪切</strong></p><p><kbd>Ctrl</kbd>+ <kbd>Z</kbd> <strong>撤销</strong></p><p><kbd>Ctrl</kbd>+ <kbd>S</kbd> <strong>保存</strong></p><p><kbd>Ctrl</kbd>+ <kbd>E</kbd> <strong>打开资源管理器</strong></p><p><kbd>Tab</kbd>+ <kbd>Alt</kbd> <strong>切换显示窗口</strong></p><h3 id="人机交互"><a href="#人机交互" class="headerlink" title="人机交互"></a>人机交互</h3><p>​ 操作计算机，可以称为人机交互，方式分为两种：</p><ul><li>图形化界面</li><li>命令行方式</li></ul><h1 id="软件的生命周期"><a href="#软件的生命周期" class="headerlink" title="软件的生命周期"></a>软件的生命周期</h1><p>​ 使用计算机，软件必不可少，而一个软件的生命周期的长短多数由用户的使用数量来决定（个人观点），软件的生命周期指的是软件的产生到报废或停止使用的时间，称为<strong>生命周期</strong>，主要流程如下：</p><ol><li><p><strong>软件定义期</strong></p><ul><li>可行性研究阶段<ul><li>技术、人力、资金、回报率、政策、风俗···</li></ul></li><li>需求分析阶段<ul><li>分为功能性需求与非功能性需</li></ul></li></ul></li><li><p><strong>软件开发期</strong></p><ul><li>概要设计阶段——架构师<ul><li>子系统、模块、技术选型</li></ul></li><li>详细设计阶段——产品经理<ul><li>页面、主体内容、功能… 绘制原型图</li></ul></li><li>编码实现阶段<ul><li>编码相关的所有岗位一起将项目实现出来</li></ul></li><li>测试阶段——测试工程师<ul><li>软件测试</li></ul></li></ul></li><li><p><strong>软件维护期</strong></p><ul><li>部署阶段——运维工程师<ul><li>将软件部署到服务器</li></ul></li><li>维护阶段<ul><li>软件的更新与修复，当一个软件不再维护，说明这个软件生命周期快要结束</li></ul></li></ul></li></ol>]]></content>
-      
-      
-      <categories>
-          
-          <category> 前端 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> HTML </tag>
-            
-            <tag> WEB前端 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>初识WEB前端(初识HTML) 二</title>
       <link href="/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%88%9D%E8%AF%86HTML)%20%E4%BA%8C/"/>
       <url>/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%88%9D%E8%AF%86HTML)%20%E4%BA%8C/</url>
@@ -127,6 +100,33 @@
         <tags>
             
             <tag> 随想 </tag>
+            
+            <tag> WEB前端 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>初识WEB前端(基础知识) 一</title>
+      <link href="/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86)%20%E4%B8%80/"/>
+      <url>/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86)%20%E4%B8%80/</url>
+      
+        <content type="html"><![CDATA[<p>通过笔记整理<a href="https://baike.baidu.com/item/HTML5/4234903?fr=aladdin">HTML5</a>的介绍</p><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h3 id="计算机"><a href="#计算机" class="headerlink" title="计算机"></a>计算机</h3><p>​ 认识 HTML，我们需要先认识它的运行载体，大家都不陌生，<strong>计算机（computer）</strong>，计算机又是由<strong>显示器</strong>，<strong>主机箱</strong>组成，机箱内包含了计算机的核心硬件，有<strong>主板</strong>、<strong>CPU</strong>、<strong>内存条</strong>、<strong>硬盘</strong>、<strong>电源模块</strong>、<strong>网卡</strong>、<strong>光驱</strong>、<strong>散热风扇</strong>、<strong>声卡</strong> · · ·</p><p>​ 这些都称之为硬件，最主要的还是计算机的软件：<strong>系统</strong>，目前主流的系统就是常见的<strong>Windows 系统</strong>和<strong>MacOS</strong>(苹果电脑操作系统)，对于开发的小伙伴来说还有熟悉的<strong>LIinux 系统</strong>，我们可以大概的把电子产品分为两类：<strong>硬件</strong>和<strong>软件</strong>，硬件已经介绍了，而软件在我们的生活中是形影不离的；比如微信、支付宝、美团、高德、淘宝、京东这些主流的生活必备软件，这些软件的制作开发就会用到 CSS、JS、Java 这些强大的开发语言进行美化和开发。详细信息如下：</p><h6 id=""><a href="#" class="headerlink" title=""></a></h6><h1 id="计算机基础"><a href="#计算机基础" class="headerlink" title="计算机基础"></a>计算机基础</h1><h3 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h3><p>​ 这里给大家展示的是一些常用的快捷键方法</p><p><kbd>Ctrl</kbd>+ <kbd>A</kbd> <strong>全选</strong></p><p><kbd>Ctrl</kbd>+ <kbd>C</kbd> <strong>复制</strong></p><p><kbd>Ctrl</kbd>+ <kbd>V</kbd> <strong>粘贴</strong></p><p><kbd>Ctrl</kbd>+ <kbd>X</kbd> <strong>剪切</strong></p><p><kbd>Ctrl</kbd>+ <kbd>Z</kbd> <strong>撤销</strong></p><p><kbd>Ctrl</kbd>+ <kbd>S</kbd> <strong>保存</strong></p><p><kbd>Ctrl</kbd>+ <kbd>E</kbd> <strong>打开资源管理器</strong></p><p><kbd>Tab</kbd>+ <kbd>Alt</kbd> <strong>切换显示窗口</strong></p><h3 id="人机交互"><a href="#人机交互" class="headerlink" title="人机交互"></a>人机交互</h3><p>​ 操作计算机，可以称为人机交互，方式分为两种：</p><ul><li>图形化界面</li><li>命令行方式</li></ul><h1 id="软件的生命周期"><a href="#软件的生命周期" class="headerlink" title="软件的生命周期"></a>软件的生命周期</h1><p>​ 使用计算机，软件必不可少，而一个软件的生命周期的长短多数由用户的使用数量来决定（个人观点），软件的生命周期指的是软件的产生到报废或停止使用的时间，称为<strong>生命周期</strong>，主要流程如下：</p><ol><li><p><strong>软件定义期</strong></p><ul><li>可行性研究阶段<ul><li>技术、人力、资金、回报率、政策、风俗···</li></ul></li><li>需求分析阶段<ul><li>分为功能性需求与非功能性需</li></ul></li></ul></li><li><p><strong>软件开发期</strong></p><ul><li>概要设计阶段——架构师<ul><li>子系统、模块、技术选型</li></ul></li><li>详细设计阶段——产品经理<ul><li>页面、主体内容、功能… 绘制原型图</li></ul></li><li>编码实现阶段<ul><li>编码相关的所有岗位一起将项目实现出来</li></ul></li><li>测试阶段——测试工程师<ul><li>软件测试</li></ul></li></ul></li><li><p><strong>软件维护期</strong></p><ul><li>部署阶段——运维工程师<ul><li>将软件部署到服务器</li></ul></li><li>维护阶段<ul><li>软件的更新与修复，当一个软件不再维护，说明这个软件生命周期快要结束</li></ul></li></ul></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前端 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> HTML </tag>
             
             <tag> WEB前端 </tag>
             
