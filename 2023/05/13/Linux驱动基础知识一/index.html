@@ -1,0 +1,1252 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Linux驱动基础知识 | King Jian</title><meta name="keywords" content="Linux,随想"><meta name="author" content="King Jian"><meta name="copyright" content="King Jian"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="Linux驱动基础知识"><meta name="application-name" content="Linux驱动基础知识"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta name="description" content="以下内容部分摘录自公众号：嵌入式与Linux那些事，仅用于个人交流与学习，如涉及侵权请联系站长删除！ 1.指令1.1 常用的 Linux 指令 怎么查看当前进程？怎么执行退出？怎么查看当前路径？查看当前进程： ps执行退出： exit查看当前路径： pwd  ls 命令执行什么功能？ 可以带哪些参数？功能列出指定目录中的目录，以及文件参数-a 显示所有文件及目录 (. 开头的隐藏文件也会列出)-l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux驱动基础知识">
+<meta property="og:url" content="https://kingjian66.top/2023/05/13/Linux%E9%A9%B1%E5%8A%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B8%80/index.html">
+<meta property="og:site_name" content="King Jian">
+<meta property="og:description" content="以下内容部分摘录自公众号：嵌入式与Linux那些事，仅用于个人交流与学习，如涉及侵权请联系站长删除！ 1.指令1.1 常用的 Linux 指令 怎么查看当前进程？怎么执行退出？怎么查看当前路径？查看当前进程： ps执行退出： exit查看当前路径： pwd  ls 命令执行什么功能？ 可以带哪些参数？功能列出指定目录中的目录，以及文件参数-a 显示所有文件及目录 (. 开头的隐藏文件也会列出)-l">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kingjian66.top/img/default_cover.jpg">
+<meta property="article:published_time" content="2023-05-13T01:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-14T01:00:00.000Z">
+<meta property="article:author" content="King Jian">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="随想">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kingjian66.top/img/default_cover.jpg"><link rel="shortcut icon" href="http://superjianking.com/Myfiles/img/logo(500X500).png"><link rel="canonical" href="https://kingjian66.top/2023/05/13/Linux%E9%A9%B1%E5%8A%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B8%80/"><link rel="preconnect" href="//npm.elemecdn.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://npm.elemecdn.com/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/@fancyapps/ui@4.0.31/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  friends_vue_info: {"apiurl":"https://friends.anzhiy.cn/"},
+  navMusic: true,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#3b70fc","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://npm.elemecdn.com/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://npm.elemecdn.com/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux驱动基础知识',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-05-14 09:00:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="web_box"><div id="web_container"><div id="menu-mask"></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button" tabindex="-1"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://hexo.superjianking.com" title="博客" target="_blank"><img class="back-menu-item-icon" src="http://superjianking.com/Myfiles/img/logo(500X500).png" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" href="https://chat.jinshutuan.com/" title="chat GPT" target="_blank"><img class="back-menu-item-icon" src="https://img1.baidu.com/it/u=3613958228,3522035000&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=500&amp;h=500" alt="chat GPT"/><span class="back-menu-item-text">chat GPT</span></a></div></div></div></div><a id="site-name" href="/"><div class="title">King Jian</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=2732801100&amp;server=tencent"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="darkmode_navswitch"><a class="darkmode_switchbutton" type="button" href="javascript:void(0);" title="浅色和深色模式转换" onclick="anzhiyu.switchDarkMode()"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke" style="font-size: 1.3rem"></i></a></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/Linux/"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>Linux</span></a><a class="article-meta__tags" href="/tags/%E9%9A%8F%E6%83%B3/"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>随想</span></a></span></div></div><h1 class="post-title">Linux驱动基础知识</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-13T01:00:00.000Z" title="发表于 2023-05-13 09:00:00">2023-05-13</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-05-14T01:00:00.000Z" title="更新于 2023-05-14 09:00:00">2023-05-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">5.5k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>17分钟</span></span><span class="post-meta-separator"></span><span id="" data-flag-title="Linux驱动基础知识"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="twikoo_visitors" title="评论数"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为合肥"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>合肥</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="/images/cover/butterfly_weibo.jpg"></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>以下内容部分摘录自公众号：<code>嵌入式与Linux那些事</code>，仅用于个人交流与学习，如涉及侵权请联系站长删除！</p>
+<h2 id="1-指令"><a href="#1-指令" class="headerlink" title="1.指令"></a>1.指令</h2><h3 id="1-1-常用的-Linux-指令"><a href="#1-1-常用的-Linux-指令" class="headerlink" title="1.1 常用的 Linux 指令"></a>1.1 常用的 Linux 指令</h3><ol>
+<li><p><strong>怎么查看当前进程？怎么执行退出？怎么查看当前路径？</strong><br>查看当前进程： <code>ps</code><br>执行退出： <code>exit</code><br>查看当前路径： <code>pwd</code></p>
+</li>
+<li><p><strong>ls 命令执行什么功能？ 可以带哪些参数？</strong><br><strong>功能</strong><br>列出指定目录中的目录，以及文件<br><strong>参数</strong><br><code>-a</code> 显示所有文件及目录 (. 开头的隐藏文件也会列出)<br><code>-l</code> 除文件名称外，亦将文件型态、权限、拥有者、文件大小等资讯详细列出<br><code>-r</code> 将文件以相反次序显示(原定依英文字母次序)<br><code>-t</code> 将文件依建立时间之先后次序列出<br><code>-A</code> 同 -a ，但不列出 “.” (目前目录) 及 “…” (父目录)<br><code>-F</code> 在列出的文件名称后加一符号；例如可执行档则加 “*”, 目录则加 “&#x2F;”<br><code>-R</code> 若目录下有文件，则以下之文件亦皆依序列出</p>
+</li>
+<li><p><strong>创建目录用什么命令？</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">mkdir runoob        #在工作目录下，建立一个名为 runoob 的子目录</span><br><span class="line">mkdir -p runoob2/test   #在工作目录下的 runoob2 目录中，建立一个名为 test 的子目录。</span><br><span class="line">若 runoob2 目录原本不存在，则建立一个。（注：本例若不加 -p 参数，且原本 runoob2 目录不存在，则产生错误。）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>创建文件用什么命令？</strong></p>
+<p><strong>vi 或 vim</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">vi file1.txt #直接创建并打开一个文件file1.txt</span><br></pre></td></tr></table></figure>
+
+<p><strong>touch</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">touch file2.txt #创建新的空文件file2.txt</span><br></pre></td></tr></table></figure>
+
+<p><strong>echo</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">echo &quot;this is a new file&quot; &gt; file3.txt   #创建文件file3.txt并将this is a new file写入（说明：使用&gt;指令覆盖文件原内容并重新输入内容，若文件不存在则创建文件。）</span><br><span class="line">echo &quot;add contents&quot; &gt;&gt;file3.txt    #在已存在的文件补充写入新内容add contents（说明：使用&gt;&gt;指令向文件追加内容，原内容将保存。）</span><br></pre></td></tr></table></figure>
+
+<p><strong>less 、more 、cat</strong></p>
+<p>三者都是将文件内容输出到标准输出，其中 less 和 more 可以分页显示，cat 是显示全部。<br>三者可以根据已经存在的文件创建新的文件。假设已经存在文件 1.txt。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">cat 1.txt &gt; 2.txt</span><br><span class="line">less 1.txt &gt; 3.txt</span><br><span class="line">more 1.txt &gt; 4.txt</span><br></pre></td></tr></table></figure>
+
+<p>此时创建的文件内容都和 1.txt 中文件内容相同。</p>
+<p><strong>cd</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">cd &gt; file3.txt  #创建新的空文件file3.txt</span><br><span class="line">cd &gt;&gt; file4.txt  #创建新的空文件file4.txt</span><br></pre></td></tr></table></figure>
+
+<p>cd 最主要的作用是切换目录，在 cd 后面跟&gt;或&gt;&gt;再加上文件名就可以创建一个内容为空的文件。它和 echo 的区别之处在于<strong>echo 可写文件内容，而 cd 并不能</strong>。</p>
+</li>
+<li><p>复制文件用什么命令？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">cp –r test/ newtest #将当前目录 test/ 下的所有文件复制到新目录 newtest 下(前-&gt;后)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看文件内容有哪些命令可以使用？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">vi 文件名  #编辑方式查看，可修改</span><br><span class="line">cat 文件名 #显示全部文件内容</span><br><span class="line">more 文件名 #分页显示文件内容</span><br><span class="line">less 文件名 #与 more 相似，更好的是可以往前翻页</span><br><span class="line">tail 文件名 #仅查看尾部，还可以指定行数</span><br><span class="line">head 文件名 #仅查看头部,还可以指定行数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>怎么向屏幕输出带空格的字符串，比如”hello world”?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">echo hello world</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>移动文件用哪个命令？改名用哪个命令？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">mv source_file(文件) dest_file(文件) #将源文件名 source_file 改为目标文件名 dest_file</span><br><span class="line">mv source_file(文件) dest_directory(目录) #将文件 source_file 移动到目标目录 dest_directory 中</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除文件用哪个命令？如果需要连目录及目录下文件一块删除呢？删除空文件夹用什么命令？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">rm -rf file/directory    #删除当前目录下的所有文件及目录，并且是直接删除，无需逐一确认</span><br><span class="line">rm -rf  directory/       #删除目录 directory，不管该目录下是否有子目录或文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查找文件内容用哪个命令？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">grep test *file  #在当前目录中，查找后缀有 file 字样的文件中包含 test 字符串的文件，并打印出该字符串的行</span><br><span class="line">grep -r update /etc/acpi #查找指定目录/etc/acpi 及其子目录（如果存在子目录的话）下所有文件中包含字符串&quot;update&quot;的文件(递归)</span><br><span class="line">grep -v test *test*      #查找文件名中包含 test 的文件中不包含test 的行(排除)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查找文件用哪个命令？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">find . -name &quot;*.c&quot;  #将当前目录及其子目录下所有文件后缀为 .c 的文件列出来</span><br><span class="line">find . -ctime -20   #将当前目录及其子目录下所有最近 20 天内更新过的文件列出</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>cat 命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">cat -n textfile1  #把 textfile1 的文档内容加上行号后输入到屏幕</span><br><span class="line">cat -n textfile1 &gt; textfile2  #把 textfile1 的文档内容加上行号后输入 textfile2 这个文档里</span><br><span class="line">cat -b textfile1 textfile2 &gt;&gt; textfile3  #把 textfile1 和 textfile2 的文档内容加上行号（空白行不加）之后将内容附加到 textfile3 文档里</span><br><span class="line">cat /dev/null &gt; /etc/test.txt #清空 /etc/test.txt 文档内容</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="1-2-常用的-GCC-指令"><a href="#1-2-常用的-GCC-指令" class="headerlink" title="1.2 常用的 GCC 指令"></a>1.2 常用的 GCC 指令</h3><ol>
+<li><p>预处理 (-E .i)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">gcc -E test.c -o test.i #把预处理的结果导出到test.i文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译为汇编代码(-S .s)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">gcc -S test.i -o test.s #编译器将test.i翻译成汇编语言，并将结果存储在test.s文件中。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>汇编(-c .o)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">gcc -c test.s -o test.o #将汇编代码编译为目标文件（.o）但不链接</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>链接(无后缀)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">gcc test.o -o test #将生成的目标文件test.o生成最终的可执行文件test</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一步到位编译(.c 无后缀)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">gcc test.c -o test #将源文件test.c编译链接为可执行文件test</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多文件编译</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">gcc test1.c test2.c -o test</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>警告处理</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">gcc -w test.c -o test  # 忽略编译时的警告</span><br><span class="line">gcc -Wall test.c -o test #编译后显示所有警告</span><br><span class="line">gcc -Werror test.c -o test #在产生警告的地方停止编译</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="1-3-常用的-GDB-调试指令"><a href="#1-3-常用的-GDB-调试指令" class="headerlink" title="1.3 常用的 GDB 调试指令"></a>1.3 常用的 GDB 调试指令</h3><ul>
+<li><p>GDB（GNU symbolic debugger）是 GNU Project 调试器</p>
+</li>
+<li><p>GNU 操作系统是一种由自由软件构成的类 Unix 操作系统</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line"></span><br><span class="line">gcc -g test.c -o test  #编译时生成debug有关的程序信息</span><br><span class="line">gdb test        #启动调试</span><br><span class="line">help #查看命令帮助，具体命令查询在gdb中输入help + 命令,简写h</span><br><span class="line">run #重新开始运行文件（run-text：加载文本文件，run-bin：加载二进制文件）,简写r</span><br><span class="line">start #单步执行，运行程序，停在第一执行语句</span><br><span class="line">list #查看原代码（list-n,从第n行开始查看代码。list+ 函数名：查看具体函数）,简写l</span><br><span class="line">set #设置变量的值</span><br><span class="line">next #单步调试（逐过程，函数直接执行）,简写n</span><br><span class="line">step #单步调试（逐语句：跳入自定义函数内部执行）,简写s</span><br><span class="line">backtrace #查看函数的调用的栈帧和层级关系,简写bt</span><br><span class="line">frame #切换函数的栈帧,简写f</span><br><span class="line">info #查看函数内部局部变量的数值,简写i</span><br><span class="line">finish #结束当前函数，返回到函数调用点</span><br><span class="line">continue #继续运行,简写c</span><br><span class="line">print #打印值及地址,简写p</span><br><span class="line">quit #退出gdb,简写q</span><br><span class="line">break+num #在第num行设置断点,简写b</span><br><span class="line">info breakpoints #查看当前设置的所有断点</span><br><span class="line">delete breakpoints num #删除第num个断点,简写d</span><br><span class="line">display #追踪查看具体变量值</span><br><span class="line">undisplay #取消追踪观察变量</span><br><span class="line">watch #被设置观察点的变量发生修改时，打印显示</span><br><span class="line">i watch #显示观察点</span><br><span class="line">enable breakpoints #启用断点</span><br><span class="line">disable breakpoints #禁用断点</span><br><span class="line">x #查看内存x/20xw 显示20个单元，16进制，4字节每单元</span><br><span class="line">run argv[1] argv[2] #调试时命令行传参</span><br><span class="line">set follow-fork-mode child #Makefile项目管理：选择跟踪父子进程(fork())</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="1-4-常用的驱动开发指令"><a href="#1-4-常用的驱动开发指令" class="headerlink" title="1.4 常用的驱动开发指令"></a>1.4 常用的驱动开发指令</h3><ol>
+<li><p>加载&#x2F;卸载驱动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">insmod/modprobe #加载驱动</span><br><span class="line">rmmod   #卸载驱动Linux驱动如何查看驱动模块中打印信息？</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Linux 驱动如何查看驱动模块中打印信息？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">dmesg</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何查看内核中已有的字符设备的信息？</p>
+<p><code>lsmod</code> 和<code>modprobe</code>：<code>lsmod</code>可以查看模块的依赖关系，<code>modprobe</code>在加载模块时会加载其他依赖的模块。</p>
+</li>
+<li><p>如何查看正在使用的有哪些中断号？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SHELL</span><br><span class="line">cat /proc/interrupt</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2-Uboot"><a href="#2-Uboot" class="headerlink" title="2.Uboot"></a>2.Uboot</h2><h3 id="2-1-什么是-bootloader？"><a href="#2-1-什么是-bootloader？" class="headerlink" title="2.1 什么是 bootloader？"></a>2.1 什么是 bootloader？</h3><ul>
+<li>Linux 系统要启动就必须需要一个 bootloader 程序，也就说芯片上电以后先运行一段 bootloader 程序。这段 bootloader 程序会先<strong>初始化时钟，看门狗，中断，SDRAM，等外设，然后将 Linux 内核从 flash（NAND, NOR FLASH,SD,MMC 等）拷贝到 SDRAM 中，最后启动 Linux 内核</strong>。当然了， bootloader 的实际工作要复杂的多，但是它最主要的工作就是启动 Linux 内核。</li>
+<li>bootloader 和 Linux 内核的关系就跟 PC 上的 BIOS 和 Windows 的关系一样，<strong>bootloader 就相当于 BIOS。总得来说，Bootloader 就是一小段程序，它在系统上电时开始执行，初始化硬件设各、准备好软件环境，最后调用操作系统内核</strong>。</li>
+</ul>
+<h3 id="2-2-uboot-启动过程中做了那些事？"><a href="#2-2-uboot-启动过程中做了那些事？" class="headerlink" title="2.2 uboot 启动过程中做了那些事？"></a>2.2 uboot 启动过程中做了那些事？</h3><ol>
+<li><p><strong>第一阶段</strong><br>初始化时钟，关闭看门狗，关中断，启动 ICACHE，关闭 DCACHE 和 TLB，关闭 MMU，初始化 SDRAM，初始化 NAND FLASH，重定位。</p>
+<blockquote>
+<p>Linux 的看门狗（Watchdog）是一种硬件或软件机制，用于监视系统的运行状态，以防止系统出现故障或死机的情况。它能够检测到系统的异常情况并自动采取一些预设的措施，例如重启系统或发送警报信息。</p>
+</blockquote>
+</li>
+<li><p><strong>第二阶段</strong><br>初始化一个串口，检测系统内存映射，将<strong>内核映象和根文件系统映象从 Flash 上读到 SDRAM 空间</strong>中，为内核设置启动参数，调用内核。</p>
+</li>
+</ol>
+<h3 id="2-3-uboot-和内核如何完成参数传递？"><a href="#2-3-uboot-和内核如何完成参数传递？" class="headerlink" title="2.3 uboot 和内核如何完成参数传递？"></a>2.3 uboot 和内核如何完成参数传递？</h3><ul>
+<li>uboot 启动后已经完成了基本的硬件初始化（如：内存、串口等），接下来，它的主要任务就是加载 Linux 内核到开发板的内存，然后跳转到 Linux 内核所在的地址运行。<br><strong>PS:只要问到 uboot，面试官必问 uboot 和内核的参数传递，所以一定要知道！</strong><br>具体是如何跳转呢？做法很简单，直接修改 PC 寄存器的值为 Linux 内核所在的地址，这样 CPU 就会从 Linux 内核所在的地址去取指令，从而执行内核代码。</li>
+<li>在前面我们已经知道，在跳转到内核以前，uboot 需要做好以下三件事情：<ol>
+<li><strong>CPU 寄存器的设置</strong><br>R0&#x3D;0<br>R1&#x3D;机器类型 ID；对于 ARM 结构的 CPU，其机器类型 ID 可以参见 linux&#x2F;arch&#x2F;arm tools&#x2F; mach-types<br>R2&#x3D;启动参数标记列表在 RAM 中起始基地址</li>
+<li><strong>CPU 工作模式</strong><br>必须禁止中断（IRQs 和 FIQs）<br>CPU 必须为 SVC 模式</li>
+<li><strong>Cache 和 MMU 的设置</strong><br>MMU 必须关闭<br>指令 Cache 可以打开也可以关闭<br>数据 Cache 必须关闭<br>其中上面第一步 CPU 寄存器的设置中，就是通过 R0，R1，R2 三个参数给内核传递参数的。</li>
+</ol>
+</li>
+</ul>
+<h3 id="2-4-为什么要给内核传递参数呢？"><a href="#2-4-为什么要给内核传递参数呢？" class="headerlink" title="2.4 为什么要给内核传递参数呢？"></a>2.4 为什么要给内核传递参数呢？</h3><ul>
+<li>在此之前，uboot 已经完成了硬件的初始化，可以说已经”适应了“这块开发板。然而，内核并不是对于所有的开发板都能完美适配的（如果适配了，可想而知这个内核有多庞大，又或者有新技术发明了，可以完美的适配各种开发板），此时，对于开发板的环境一无所知。所以，要想启动 Linux 内核，uboot 必须要给内核传递一些必要的信息来告诉内核<strong>当前所处的环境</strong>。</li>
+</ul>
+<h3 id="2-5-如何给内核传递参数？"><a href="#2-5-如何给内核传递参数？" class="headerlink" title="2.5 如何给内核传递参数？"></a>2.5 如何给内核传递参数？</h3><ul>
+<li>uboot 把<strong>机器 ID 通过 R1 传递给内核</strong>，Linux 内核运行的时候，首先就从 R1 中读取机器 ID 来判断是否支持当前机器。这个机器 ID 实际上就是开发板<strong>CPU 的 ID</strong>，每个厂家生产出一款 CPU 的时候都会给它指定一个唯一的 ID，大家可以到 uboot 源码的<code>arch\arm\include\asm\mach-type.h</code>文件中去查看。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://tuchuang.voooe.cn/images/2023/03/19/_ddc0a2e996fc49f9.png"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://tuchuang.voooe.cn/images/2023/03/19/_ddc0a2e996fc49f9.png" alt="img"></a></p>
+<ul>
+<li><strong>R2 存放的是块内存的基地址</strong>，这块内存中存放的是 uboot 给 Linux 内核的其他参数。这些参数有内存的<strong>起始地址、内存大小、Linux 内核启动后挂载文件系统的方式</strong>等信息。很明显，参数有多个，不同的参数有不同的内容，为了让 Linux 内核能精确的解析出这些参数，双方在传递参数的时候要求参数在存放的时猴需要按照<strong>双方规定的格式存放</strong>。</li>
+<li>除了约定好参数存放的地址外，还要<strong>规定参数的结构</strong>。Linux2.4.x 以后的内核都期望以<strong>标记列表</strong>（tagged_list）的形式来传递启动参数。标记，就是一种数据结构；标记列表，就是挨着存放的多个标记。标记列表以标记<code>ATAG_CORE</code>开始，以标记<code>ATAG_NONE</code>结束。</li>
+<li>标记的数据结构为 tag，它<strong>由一个 tag_header 结构和一个联合（union）组成</strong>。tag<em>header 结构表示标记的类型及长度，比如是表示内存还是表示命令行参数等。对于不同类型的标记使用不同的联合（union），比如表示内存时使用 tag</em> mem32，表示命令行时使用 tag_cmdline。具体代码见<code>arch\arm\include\asm\setup.h</code>。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://tuchuang.voooe.cn/images/2023/03/19/_8bc5f63ffa1c78c9.png"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://tuchuang.voooe.cn/images/2023/03/19/_8bc5f63ffa1c78c9.png" alt="img"></a></p>
+<ul>
+<li>从上面可以看出，struct_tag 结构体由 structtag_header+联合体 union 构成，结构体 struct tag_header 用来描述每个 tag 的头部信息，如 tag 的类型，tag 大小。联合体 union 用来描述每个传递给 Linux 内核的参数信息。</li>
+</ul>
+<h3 id="2-5-为什么-uboot-要关掉-caches？"><a href="#2-5-为什么-uboot-要关掉-caches？" class="headerlink" title="2.5 为什么 uboot 要关掉 caches？"></a>2.5 为什么 uboot 要关掉 caches？</h3><ul>
+<li>caches 是 cpu 内部的一个 2 级缓存，它的作用是将常用的数据和指令放在 cpu 内部。caches 是通过 CP15 管理的，刚上电的时候，cpu 还不能管理 caches。上电的时候指令 cache 可关闭，也可不关闭，但<strong>数据 cache 一定要关闭</strong>，否则可能导致刚开始的代码里面，去取数据的时候，从 cache 里面取，而这时候<strong>RAM 中数据还没有 caches 过来，导致数据预取异常</strong>。</li>
+</ul>
+<h2 id="3-文件系统"><a href="#3-文件系统" class="headerlink" title="3.文件系统"></a>3.文件系统</h2><h3 id="3-1-什么是根文件系统？"><a href="#3-1-什么是根文件系统？" class="headerlink" title="3.1 什么是根文件系统？"></a>3.1 什么是根文件系统？</h3><ul>
+<li>根文件系统首先是一种文件系统，该文件系统不仅具有普通文件系统的存储数据文件的功能，但是相对于普通的文件系统，它的特殊之处在于，它是<strong>内核启动时所挂载（mount）的第一个文件系统</strong>，内核代码的映像文件保存在根文件系统中，系统引导启动程序会在根文件系统挂载之后从中把一些<strong>初始化脚本（如 rcS、inittab）和服务</strong>加载到内存中去运行，里面包含了 Linux 系统能够运行<strong>所必需的应用程序、库</strong>等，比如可以给用户提供操作 Linux 的控制界面的 shell 程序、动态连接的程序运行时需要的 glibc 库等。</li>
+<li>文件系统和内核是完全独立的两个部分。在嵌入式中移植的内核下载到开发板上，是没有办法真正的启动 Linux 操作系统的，会出现无法加载文件系统的错误。</li>
+</ul>
+<h3 id="3-2-根文件系统为什么这么重要？"><a href="#3-2-根文件系统为什么这么重要？" class="headerlink" title="3.2 根文件系统为什么这么重要？"></a>3.2 根文件系统为什么这么重要？</h3><ul>
+<li>根文件系统之所以在前面加一个“根”，说明它是加载其它文件系统的“根”，那么<strong>如果没有这个根，其它的文件系统也就没有办法进行加载的</strong>。根文件系统包含系统启动时<strong>所必须的目录和关键性的文件</strong>，以及使其他文件系统得以挂载（mount）所必要的文件。例如：<ul>
+<li>init 进程的应用程序必须运行在根文件系统上。</li>
+<li>根文件系统提供了根目录“&#x2F;”。</li>
+<li>linux 挂载分区时所依赖的信息存放于根文件系统<code>/etc/fstab</code>这个文件中。</li>
+<li>shell 命令程序必须运行在根文件系统上，譬如<code>ls</code>、<code>cd</code>等命令。</li>
+</ul>
+</li>
+<li>总结：一套 linux 体系，只有内核本身是不能工作的，必须要 rootfs（上的 etc 目录下的配置文件、<code>/bin/sbin</code>等目录下的 shell 命令，还有&#x2F;lib 目录下的库文件等）相配合才能工作。</li>
+</ul>
+<h3 id="3-3-可执行映像文件通常由几部分构成，它们有什么特点？"><a href="#3-3-可执行映像文件通常由几部分构成，它们有什么特点？" class="headerlink" title="3.3 可执行映像文件通常由几部分构成，它们有什么特点？"></a>3.3 可执行映像文件通常由几部分构成，它们有什么特点？</h3><p>可执行映像文件通常由以下几部分构成：</p>
+<ul>
+<li>一个或多个代码段，代码段的属性为只读。</li>
+<li>零个或多个包含初始化数据的数据段，数据段的属性为可读写。</li>
+<li>零个或多个不包含初始化数据的数据段，数据段的属性为可读写。</li>
+</ul>
+<h2 id="4-中断"><a href="#4-中断" class="headerlink" title="4.中断"></a>4.中断</h2><h3 id="4-1-硬中断-x2F-软中断是什么？有什么区别？"><a href="#4-1-硬中断-x2F-软中断是什么？有什么区别？" class="headerlink" title="4.1 硬中断 &#x2F; 软中断是什么？有什么区别？"></a>4.1 硬中断 &#x2F; 软中断是什么？有什么区别？</h3><ul>
+<li><p><strong>硬中断</strong></p>
+<ol>
+<li>硬中断是由<strong>硬件</strong>产生的，比如，像磁盘，网卡，键盘，时钟等。<strong>每个设备或设备集都有它自己的 IRQ</strong>（中断请求）。基于 IRQ，CPU 可以将相应的请求分发到对应的硬件驱动上（注：硬件驱动通常是内核中的一个子程序，而不是一个独立的进程）。</li>
+<li>处理中断的驱动是需要运行在 CPU 上的，因此，当中断产生的时候，CPU 会中断当前正在运行的任务，来处理中断。在有多核心的系统上，<strong>一个中断通常只能中断一颗 CPU</strong>（也有一种特殊的情况，就是在大型主机上是有硬件通道的，它可以在没有主 CPU 的支持下，可以同时处理多个中断。）。</li>
+<li><strong>硬中断可以直接中断 CPU</strong>。它会引起内核中相关的代码被触发。对于那些需要花费一些时间去处理的进程，中断代码本身也可以被其他的硬中断中断。</li>
+<li>对于时钟中断，内核调度代码会将当前正在运行的进程挂起，从而让其他的进程来运行。它的存在是为了让<strong>调度代码（或称为调度器）可以调度多任务</strong>。</li>
+</ol>
+</li>
+<li><p><strong>软中断</strong></p>
+<ol>
+<li>软中断的处理非常像硬中断。然而，它们仅仅是由<strong>当前正在运行的进程</strong>所产生的。</li>
+<li><strong>通常，软中断是一些对 I&#x2F;O 的请求</strong>。这些请求会调用内核中可以调度 I&#x2F;O 发生的程序。<strong>对于某些设备，I&#x2F;O 请求需要被立即处理，而磁盘 I&#x2F;O 请求通常可以排队并且可以稍后处理</strong>。根据 I&#x2F;O 模型的不同，进程或许会被挂起直到 I&#x2F;O 完成，此时内核调度器就会选择另一个进程去运行。I&#x2F;O 可以在进程之间产生。并且调度过程通常和磁盘 I&#x2F;O 的方式是相同。</li>
+<li><strong>软中断仅与内核相联系</strong>。而内核主要负责对需要运行的任何其他的进程进行调度。一些内核允许设备驱动的一些部分存在于用户空间，并且当需要的时候内核也会调度这个进程去运行。</li>
+<li>软中断并不会直接中断 CPU。也<strong>只有当前正在运行的代码（或进程）才会产生软中断</strong>。这种中断是一种<strong>需要内核为正在运行的进程去做一些事情</strong>（通常为 I&#x2F;O）的请求。有一个特殊的软中断是 Yield 调用，它的作用是请求内核调度器去查看是否有一些其他的进程可以运行。</li>
+</ol>
+<blockquote>
+<p>说人话就是只会影响内核去间接调度 CPU，而不会直接中断 CPU 去处理中断服务程序</p>
+</blockquote>
+</li>
+<li><p>区别</p>
+<ol>
+<li>软中断是执行<strong>中断指令</strong>产生的，而硬中断是由<strong>外设</strong>引发的。</li>
+<li>硬中断的中断号是由<strong>中断控制器</strong>提供的，软中断的中断号由指令直接指出，无需使用中断控制器。</li>
+<li>硬中断是<strong>可屏蔽</strong>的，软中断不可屏蔽。</li>
+<li>硬中断处理程序要确保它能<strong>快速</strong>地完成任务，这样程序执行时才不会等待较长时间，称为<strong>上半部</strong>。</li>
+<li>软中断处理<strong>硬中断未完成的工作</strong>，是一种推后执行的机制，属于<strong>下半部</strong>。</li>
+</ol>
+</li>
+</ul>
+<h3 id="4-2-中断为什么要区分上半部和下半部？"><a href="#4-2-中断为什么要区分上半部和下半部？" class="headerlink" title="4.2 中断为什么要区分上半部和下半部？"></a>4.2 中断为什么要区分上半部和下半部？</h3><ul>
+<li>Linux 中断分为硬件中断和内部中断（异常），调用过程：<strong>外部中断产生-&gt;发送中断信号到中断控制器-&gt;通知处理器产生中断的中断号</strong>，让其进一步处理。</li>
+<li>对于中断上半部和下半部的产生，为了中断处理过程中被新的中断打断，将中断处理一分为二，<strong>上半部登记新的中断，快速处理简单的任务，剩余复杂耗时的处理留给下半部处理，下半部处理过程中可以被中断，上半部处理时不可被中</strong>断。</li>
+</ul>
+<h3 id="4-3-中断下半部一般如何实现？"><a href="#4-3-中断下半部一般如何实现？" class="headerlink" title="4.3 中断下半部一般如何实现？"></a>4.3 中断下半部一般如何实现？</h3><ul>
+<li><strong>软中断、tasklet、工作队列</strong></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_16933601/article/details/107239908?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522161962026516780264032212%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&request_id=161962026516780264032212&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_v2~rank_v29-1-107239908.pc_v2_rank_blog_default&utm_term=%E4%B8%AD%E6%96%AD%E9%A1%B6%E5%8D%8A%E9%83%A8%E5%92%8C%E5%BA%95%E5%8D%8A%E9%83%A8%E7%9A%84%E7%90%86%E8%A7%A3">详细版解释</a></li>
+</ul>
+<h3 id="4-4-linux-中断的响应执行流程？中断的申请及何时执行-何时执行中断处理函数-？"><a href="#4-4-linux-中断的响应执行流程？中断的申请及何时执行-何时执行中断处理函数-？" class="headerlink" title="4.4 linux 中断的响应执行流程？中断的申请及何时执行(何时执行中断处理函数)？"></a>4.4 linux 中断的响应执行流程？中断的申请及何时执行(何时执行中断处理函数)？</h3><ul>
+<li>中断的响应流程：<strong>cpu 接受中断-&gt;保存中断上下文跳转到中断处理历程-&gt;执行中断上半部-&gt;执行中断下半部-&gt;恢复中断上下文</strong>。</li>
+<li>中断的申请 request_irq 的正确位置：应该是在第一次打开、硬件被告知中断之前。</li>
+</ul>
+</article><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://superjianking.com/Myfiles/img/wechatpay.jpg" target="_blank"><img class="post-qr-code-img" src="https://superjianking.com/Myfiles/img/wechatpay.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://superjianking.com/Myfiles/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="https://superjianking.com/Myfiles/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://kingjian66.top/2023/05/13/Linux%E9%A9%B1%E5%8A%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B8%80/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=Linux驱动基础知识&amp;url=https://kingjian66.top/2023/05/13/Linux%E9%A9%B1%E5%8A%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B8%80/&amp;pic=/images/cover/butterfly_weibo.jpg" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="rm.copyPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/Linux/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>Linux<span class="tagsPageCount">1</span></a><a class="post-meta__box__tags" href="/tags/%E9%9A%8F%E6%83%B3/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>随想<span class="tagsPageCount">2</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://superjianking.com/Myfiles/img/html.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://npm.elemecdn.com/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://npm.elemecdn.com/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div></div><div class="post-copyright"><i class="anzhiyufont anzhiyu-icon-copyright"></i><div class="post-copyright__author"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://kingjian66.top/2023/05/13/Linux%E9%A9%B1%E5%8A%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B8%80/">原创</a><a class="post-copyright-title"><span>Linux驱动基础知识</span></a></div><div class="post-copyright-info-box"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"></span><a class="link" href="https://kingjian66.top">King Jian</a></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a class="link" href="https://kingjian66.top/2023/05/13/Linux%E9%A9%B1%E5%8A%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E4%B8%80/">https://kingjian66.top/2023/05/13/Linux驱动基础知识一/</a></span><span class="copy-button" onclick="rm.copyPageUrl()"><i class="anzhiyufont anzhiyu-icon-copy"></i></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://kingjian66.top" target="_blank">King Jian</a>！</span></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86)%20%E4%B8%80/"><img class="next-cover" src="https://superjianking.com/Myfiles/img/web.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">初识WEB前端(基础知识) 一</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/05/18/%E9%9D%A2%E8%AF%95%E9%A2%98/" title="面试题整理"><img class="cover" src="https://superjianking.com/Myfiles/img/前端面试题.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-05-18</div><div class="title">面试题整理</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a></div><div class="comment-tips" id="comment-tips"><span>你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="author-info-top"> <div class="card-info-avatar"></div></div><div class="author-info__sayhi" id="author-info__sayhi"></div><h1 class="author-info__name">King Jian</h1><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">欢迎来到我的博客，这里有<b style="color:#fff">前端、博客、学习</b>相关的问题和看法，还有<b style="color:#fff">文章整理</b>和<b style="color:#fff">转载分享</b>。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">希望来到这里你能找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="banner-button-group"><a class="banner-button" onclick="pjax.loadUrl(&quot;/about/&quot;)"><span class="banner-button-text">了解更多</span><i class="anzhiyufont anzhiyu-icon-arrow-circle-right" style="font-size: 1.5rem"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客鸭~ <center>💻：<a target="_blank" rel="noopener" href="https://www.superjianking.com"><b><font color="#5ea6e5">superjianking.com</font></b></a><br><a href="mailto:2548092637@qq.com">📬：<b><font color="#a591e0">2548092637@qq.com</font></b></a></center></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://superjianking.com/Myfiles/img/1.jpg) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://superjianking.com/Myfiles/img/2.jpg) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">1.指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%B8%B8%E7%94%A8%E7%9A%84-Linux-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 常用的 Linux 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%B8%B8%E7%94%A8%E7%9A%84-GCC-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 常用的 GCC 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%B8%B8%E7%94%A8%E7%9A%84-GDB-%E8%B0%83%E8%AF%95%E6%8C%87%E4%BB%A4"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 常用的 GDB 调试指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%B8%B8%E7%94%A8%E7%9A%84%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91%E6%8C%87%E4%BB%A4"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 常用的驱动开发指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Uboot"><span class="toc-number">2.</span> <span class="toc-text">2.Uboot</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%BB%80%E4%B9%88%E6%98%AF-bootloader%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 什么是 bootloader？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-uboot-%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%81%9A%E4%BA%86%E9%82%A3%E4%BA%9B%E4%BA%8B%EF%BC%9F"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 uboot 启动过程中做了那些事？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-uboot-%E5%92%8C%E5%86%85%E6%A0%B8%E5%A6%82%E4%BD%95%E5%AE%8C%E6%88%90%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%EF%BC%9F"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 uboot 和内核如何完成参数传递？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%BB%99%E5%86%85%E6%A0%B8%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0%E5%91%A2%EF%BC%9F"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 为什么要给内核传递参数呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E5%A6%82%E4%BD%95%E7%BB%99%E5%86%85%E6%A0%B8%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0%EF%BC%9F"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 如何给内核传递参数？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E4%B8%BA%E4%BB%80%E4%B9%88-uboot-%E8%A6%81%E5%85%B3%E6%8E%89-caches%EF%BC%9F"><span class="toc-number">2.6.</span> <span class="toc-text">2.5 为什么 uboot 要关掉 caches？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">3.文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 什么是根文件系统？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%87%8D%E8%A6%81%EF%BC%9F"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 根文件系统为什么这么重要？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%98%A0%E5%83%8F%E6%96%87%E4%BB%B6%E9%80%9A%E5%B8%B8%E7%94%B1%E5%87%A0%E9%83%A8%E5%88%86%E6%9E%84%E6%88%90%EF%BC%8C%E5%AE%83%E4%BB%AC%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E7%82%B9%EF%BC%9F"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 可执行映像文件通常由几部分构成，它们有什么特点？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%B8%AD%E6%96%AD"><span class="toc-number">4.</span> <span class="toc-text">4.中断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E7%A1%AC%E4%B8%AD%E6%96%AD-x2F-%E8%BD%AF%E4%B8%AD%E6%96%AD%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 硬中断 &#x2F; 软中断是什么？有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E4%B8%AD%E6%96%AD%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8C%BA%E5%88%86%E4%B8%8A%E5%8D%8A%E9%83%A8%E5%92%8C%E4%B8%8B%E5%8D%8A%E9%83%A8%EF%BC%9F"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 中断为什么要区分上半部和下半部？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E4%B8%AD%E6%96%AD%E4%B8%8B%E5%8D%8A%E9%83%A8%E4%B8%80%E8%88%AC%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%EF%BC%9F"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 中断下半部一般如何实现？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-linux-%E4%B8%AD%E6%96%AD%E7%9A%84%E5%93%8D%E5%BA%94%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%EF%BC%9F%E4%B8%AD%E6%96%AD%E7%9A%84%E7%94%B3%E8%AF%B7%E5%8F%8A%E4%BD%95%E6%97%B6%E6%89%A7%E8%A1%8C-%E4%BD%95%E6%97%B6%E6%89%A7%E8%A1%8C%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0-%EF%BC%9F"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 linux 中断的响应执行流程？中断的申请及何时执行(何时执行中断处理函数)？</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/05/24/%E4%B8%80%E6%AE%B5Python%E4%BB%A3%E7%A0%81%E7%A0%B4%E8%A7%A3WiFi/" title="一段代码破解WiFi"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://superjianking.com/Myfiles/img/Python.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="一段代码破解WiFi"/></a><div class="content"><a class="title" href="/2023/05/24/%E4%B8%80%E6%AE%B5Python%E4%BB%A3%E7%A0%81%E7%A0%B4%E8%A7%A3WiFi/" title="一段代码破解WiFi">一段代码破解WiFi</a><time datetime="2023-05-24T07:39:00.000Z" title="发表于 2023-05-24 15:39:00">2023-05-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/19/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(HTML%E8%A1%A8%E5%8D%95)%20%E4%B8%89/" title="初识WEB前端(HTML表格) 三"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://superjianking.com/Myfiles/img/html.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="初识WEB前端(HTML表格) 三"/></a><div class="content"><a class="title" href="/2023/05/19/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(HTML%E8%A1%A8%E5%8D%95)%20%E4%B8%89/" title="初识WEB前端(HTML表格) 三">初识WEB前端(HTML表格) 三</a><time datetime="2023-05-19T12:30:00.000Z" title="发表于 2023-05-19 20:30:00">2023-05-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%88%9D%E8%AF%86HTML)%20%E4%BA%8C/" title="初识WEB前端(初识HTML) 二"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://superjianking.com/Myfiles/img/HTML5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="初识WEB前端(初识HTML) 二"/></a><div class="content"><a class="title" href="/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%88%9D%E8%AF%86HTML)%20%E4%BA%8C/" title="初识WEB前端(初识HTML) 二">初识WEB前端(初识HTML) 二</a><time datetime="2023-05-18T11:49:00.000Z" title="发表于 2023-05-18 19:49:00">2023-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/18/%E9%9D%A2%E8%AF%95%E9%A2%98/" title="面试题整理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://superjianking.com/Myfiles/img/前端面试题.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="面试题整理"/></a><div class="content"><a class="title" href="/2023/05/18/%E9%9D%A2%E8%AF%95%E9%A2%98/" title="面试题整理">面试题整理</a><time datetime="2023-05-18T11:49:00.000Z" title="发表于 2023-05-18 19:49:00">2023-05-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86)%20%E4%B8%80/" title="初识WEB前端(基础知识) 一"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://superjianking.com/Myfiles/img/web.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="初识WEB前端(基础知识) 一"/></a><div class="content"><a class="title" href="/2023/05/18/%E5%88%9D%E8%AF%86WEB%E5%89%8D%E7%AB%AF(%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86)%20%E4%B8%80/" title="初识WEB前端(基础知识) 一">初识WEB前端(基础知识) 一</a><time datetime="2023-05-18T11:49:00.000Z" title="发表于 2023-05-18 19:49:00">2023-05-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By King Jian</div><div id="workboard"><img class="workSituationImg boardsign" src="https://superjianking.com/Myfiles/img/moyu.svg" alt="只要敢想,13薪不是梦~" title="只要敢想,13薪不是梦~"/><div id="runtimeTextTip"></div></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v5.4.0" title="博客框架为Hexo_v5.4.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Frame-Hexo.svg" alt="博客框架为Hexo_v5.4.0"/></a><a class="github-badge" target="_blank" href="https://anzhiy.cn/" style="margin-inline:5px" data-title="本站使用AnZhiYu主题" title="本站使用AnZhiYu主题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.9/img/Theme-AnZhiYu-2E67D3.svg" alt="本站使用AnZhiYu主题"/></a><a class="github-badge" target="_blank" href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34010402703927" style="margin-inline:5px" data-title="本站已进行公安备案，皖公网安备 34010402703927号" title="本站已进行公安备案，皖公网安备 34010402703927号"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/%E7%9A%96%E5%85%AC%E5%AE%89%E5%A4%87-34010402703927%E5%8F%B7-e1d492?style=flat&amp;logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAdCAYAAAC9pNwMAAABS2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+nhxg7wAACNlJREFUSInF1mmMVeUdx/Hv2e+5+519mJWBYQZkGxZZxLKJqBXGoLS1iXWrmihotFXaJiTWWlsbl6q1aetWd5u0VkKjNG4YEJSlOCibDLMwM8x679z9nnPP1jcVJUxf+7z6J8+LT37/Z4VvaQhfFS8+sBXbctCDGrVTKlBUH4mxAbI9Hfj0IJLsp6paJ5/tmn20N/D0wKDRMq9F/c3M2U1/V0vDfWMFh+tv/Ig1zYPMabDImPJ52OaXO87W580KggCiiOsJOJ6I3wcNFaaeNKxrt72f2fLGu4FpJ/sDQABRzD22fH7/Yze069vGc6mrDLNIJCDik10sxz2by3VdPM87xzkP9jwPTZFRVI1YUJKH+oy7n3tbvv/P2wW/UQxRWe6w4ZJRptYLHDoCuz8v5cP92XbI762O+h6UVWHnUFbPpU0fEb2A60mMJ7MUi9b/b7UgKhiZMaIxm8YLplLMDPz8hl/EH+rs8TNlUpFf32uyZJGLPDwCiTGUyTWodTN49eUCdz2YwXb9NNcObp1X98WDoufynzMVCEKGn27ayPTWBi5ad8P5iQUkJEnFLjqM9Z+hrVX0vfDe6K2dPRWsW2bwyp9EUifSJB84gdxrkR0eRgv1o/3I4fbbprJ6scqamzVO9pffec1S5ZWY2Nfz5qEy/FqOC2Y3s3j53HMSi18VRjFPwSwg+1RfVbl115vvJrsfej7UGIsYPPGgQ7JXoO+Xx5B3dHEomyJ9x1qiQozkr95h5937aFnVyouPlgJK+Ss7Fxz64OTSxSX+LHYxT2IsRW5kbGI4oHcR0jqoqTjV9se3I7/f8rS/ClS23GxSXhph6L5d9Akm7qqZhHWBQGUJ+CWGFzcg7e7m6D3/ZuW1Ea5YKdA3EojuONi813TqNi+YPYOKUhXDtCeGL26/hakLLiEcdsaHRkRAoLRc4fJrmhnekyF0apgZowWSwwkaa+rw3f8WA1GZZsPP5JEChX8dhZTN6iU6kAcs5s+dHd183SJ0VVKL57pfw6YdRQw23aeWTns47DPTALWlRTR7kMLew6hGgYqUhWXYFFUdPZ6lUBahLA8hVcOftckfi7No7VRAAQqsX1dybfvG1qwriM9mM5mJ4e4jO5Cc01dPqixbr8tWGBQUL4vjGigEEShi+xUmZ2RiR/sJ1pbS8NkgZrKAGw0TsgQsQyFaF/nfYTGprAlMFysbA1pI3mhkR6snhGsaymYGvPyFEb9IdbUE2AzFFTwpRqCtBY0wmdER+hZW4j63gcJj38V+/ErSUZXsYBfjIZHIRW0c2Z8BskCAqN+CbBJBFnyyKjR+Ez57nBxLqpfMUeSISElMBFz6x2Q6OxzWrYjyxWVzEewioU3LCS5vQY6nMUrLwNaxXvoQ59IloFSx54PPAZtQLExVZZDxsVE8J4dn6v4JYatgbSjk0owPw7RGH2ADMo88Z7L20ip8f7gC7fAo0q4+0rt7kEQDvaghVZbiPHUHcyeXcfLjT3jmpR7AYsnSScya3UR8bARVMck7Y/cB75/X6rDf3Fg2dw2jKZm5dXGm1LuAzO5DCo9v6aT0ibco5kzOvLOP+NGTFJtDpPYeZKijk/Rn3QxsfZV7txwhX7ABiZUXBsGvIvguQApNQQva9RMmTvZ2dpVUls+tX/UD7GN/Y8Ws05w6rQF+9vyzg1vZjbvMRJhXiRSU8DpTFFe0QE8S6SfPkOkZoktrB2oAhZWrwljxOPmchiSMYOWNoxNuruFU5vWeXdsojiUon345113dBBQBmTYlTimgdB8nfPo4WjaNFgN9OMEkJ02dnadVt5ki54Esqy+bzKJltVhSPbI3iN2zCyMTeXNCuG7Omm2Zok7PR2+R7jvD8ouruHhmCrB5jVZeYxLdrTP4sr4Vtd9g4MA4qc4c+6cu5NPamfw4P59t2WrA4YdXKkASf7SFivo6PDdEPmf1fRM++zp1bH/0r4I1dD1ODtOWaW4IsvPjL7nqXhloQiSPwjjgMYkMASyGEBkjhISCQwkwzve/18AbT+pk8pVY4UacQi9y+gyZ0eRAw4qHa89LXEx1LXMSPfhDJYRb59BtlLKg2WPT2l6qYl1svtGkrLYckyA1S+t5+2ATm37WCui0LSynsckDNH5zTxAchbQtkx08hDHYiW6NgC0enHBzEZ102UDH8QORdEckjEzZrNWkRydzyx17uGnDXqbUnGZ6dRPjSY91q2TqwjFuvTxLo5Zn5Qo/pumRSFcTLQtybEhGE0fQrDhhJ0VvH2lTnnHPhGtsmWan469apERjI2MH3qN7+7MEfH6ql29CbV7PvsMG32k6yU2XDhEKyZw66eJaRdrXR7CzCcqUNC3zwgymPJRCH4KRRLINimpL14A5Y4GDeOqbsPRVcfuN7Xj44pav/hFfrNT2kr2rsqf2Ibp5pEA14ZIImUyW3t5REkkTXRGQ/DGGhtLginhqCWknQDE5hKf5UFSF9Lj020Q2ul5V1AR2hr+8vuP8Vlc2zMPRxoSjnx7XBC14sDoydahSGq7KdO/HFyrBchxCVfX4fDKp4T7SCQejYODZLrYgIqgKFsNIgQqEYob8mW6yiUyb7Z64LVK/+B85xznnJ3AWzqTzuIX46mr5wLs+UUTyIriBCjRNxguHMJIFDLEEvXEOVRWnSJ0+jCd4CJoGjoedM1CLcXQziW3nMV2TSMBeOx7vWZvPt1r+cMPzE8KunaUkFn0vNrvtqXj34c1W6gzxlEQ6naIoBahtnkMwoFMwIVzSRNguMt53Aj2s4nkSlgPoGqLkICsRNF0gl8rYWuP8+11/w/OOJDEhHPKLCIpOXmi+M9AgP+maiesLifF2T1Rn5ZNj5Lo/Qc/GcPMmhdoqlEgIGzCK4PiCmJKK68p4KfF3qYGuF0qCRUkJTzleUbvQyWRTuE5xYthxQbBs7EISAbkzUFG3VfXXbK2YFi3X/eryfKKnqVBItNjJxDzH8erddC4SqWwcN5WyTtlyO1RP/Lh3eHD76MB40swmiDVJyDLYRhpc5+ub6tse/wWKbvSQEAw1awAAAABJRU5ErkJggg==" alt="本站已进行公安备案，皖公网安备 34010402703927号"/></a><a class="github-badge" target="_blank" href="https://beian.miit.gov.cn/" style="margin-inline:5px" data-title="本站已进行ICP备案，皖ICP备2023005883号-1" title="本站已进行ICP备案，皖ICP备2023005883号-1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-2023005883%E5%8F%B7--1-f27e3f?logo=Codio&amp;label=%E7%9A%96ICP%E5%A4%87&amp;logoColor=f27e3f&amp;labalColor=#1fd041&amp;color=rgb(222,%2031,%2031)" alt="本站已进行ICP备案，皖ICP备2023005883号-1"/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title="本站项目由Github托管"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Source-Github.svg" alt="本站项目由Github托管"/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@2.2.0/img/badge/Copyright-BY-NC-SA.svg" alt="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"/></a></p></div></footer></div></div></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://superjianking.com/Myfiles/img/favicon.jpg"/><div class="loading-image-dot"></div><div id="loading-percentage">0%</div></div></div><script>const loadingPercentage = document.getElementById("loading-percentage");
+let loadingPercentageTimer = setInterval(function() {
+  var progressBar = document.querySelector(".pace-progress");
+  if (!progressBar) return
+  var currentValue = progressBar.getAttribute("data-progress-text");
+  if (currentValue !== loadingPercentage.textContent) {
+    loadingPercentage.textContent = currentValue;
+    if (currentValue === "100%") {
+      clearInterval(loadingPercentageTimer);
+    }
+  }
+}, 100);
+const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+    Pace.restart()
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/progress_bar/progress_bar.css"/><script async="async" src="https://npm.elemecdn.com/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div id="sidebar"><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://superjianking.com/Myfiles/img/favicon.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle/"><i class="anzhiyufont anzhiyu-icon-artstation faa-tada" style="font-size: 0.9em;"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=2732801100&amp;server=tencent"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/air-conditioner/"><i class="anzhiyufont anzhiyu-icon-fan faa-tada" style="font-size: 0.9em;"></i><span> 小空调</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch_commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="center-console" type="button" title="中控台"><i class="anzhiyufont anzhiyu-icon-fish"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><div id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()">播放音乐</div><div id="console-music-bg"></div><meting-js id="2732801100" server="tencent" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random"></meting-js></div><div id="console"><div class="close-btn" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-xmark" style="font-size: 35px;"></i></div><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://superjianking.com/Myfiles/img/wechatpay.jpg" target="_blank"><img class="post-qr-code-img" alt="wechat" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://superjianking.com/Myfiles/img/wechatpay.jpg"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://superjianking.com/Myfiles/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" alt="alipay" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://superjianking.com/Myfiles/img/alipay.jpg"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments" onclick="anzhiyu.hideConsole()"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> <span>最新评论</span></span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags" onclick="anzhiyu.hideConsole()"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/HTML/" style="font-size: 1.05rem;">HTML<sup>3</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/Python/" style="font-size: 1.05rem;">Python<sup>1</sup></a><a href="/tags/WEB%E5%89%8D%E7%AB%AF/" style="font-size: 1.05rem;">WEB前端<sup>4</sup></a><a href="/tags/%E9%9A%8F%E6%83%B3/" style="font-size: 1.05rem;">随想<sup>2</sup></a></div></div><hr/></div></div><div class="console-card history" onclick="anzhiyu.hideConsole()"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/05/"><span class="card-archive-list-date">五月 2023</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" onclick="anzhiyu.switchDarkMode()" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/2732801100&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="https://npm.elemecdn.com/hexo-theme-anzhiyu@1.2.1/source/js/utils.js"></script><script src="https://npm.elemecdn.com/hexo-theme-anzhiyu@1.2.1/source/js/main.js"></script><script src="https://npm.elemecdn.com/hexo-theme-anzhiyu@1.2.1/source/js/tw_cn.js"></script><script src="https://npm.elemecdn.com/@fancyapps/ui@4.0.31/dist/fancybox.umd.js"></script><script src="https://npm.elemecdn.com/instant.page@5.1.1/instantpage.js" type="module"></script><script src="https://npm.elemecdn.com/vanilla-lazyload@17.3.1/dist/lazyload.iife.min.js"></script><script src="https://npm.elemecdn.com/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("04/10/2023 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎来到King Jian の 博客!`,
+    `努力造就实力, 态度决定高度`,
+    `
+        
+      ██╗  ██╗██╗███╗   ██╗ ██████╗          ██╗██╗ █████╗ ███╗   ██╗
+      ██║ ██╔╝██║████╗  ██║██╔════╝          ██║██║██╔══██╗████╗  ██║
+      █████╔╝ ██║██╔██╗ ██║██║  ███╗         ██║██║███████║██╔██╗ ██║
+      ██╔═██╗ ██║██║╚██╗██║██║   ██║    ██   ██║██║██╔══██║██║╚██╗██║
+      ██║  ██╗██║██║ ╚████║╚██████╔╝    ╚█████╔╝██║██║  ██║██║ ╚████║
+      ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝      ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2023 By 安知鱼主题 1.2.1",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#3b70fc",
+      "",
+      "color:#3b70fc",
+      "color:#3b70fc",
+      "",
+      "color:#3b70fc",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 King Jian 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("04/10/2023 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      img.src = "https://superjianking.com/Myfiles/img/kuaihuo.svg";
+      img.title = "下班了就该咕噜咕噜，嗨皮~";
+      img.alt = "下班了就该咕噜咕噜，嗨皮~";
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.superjianking.com/',
+      region: '',
+      onCommentLoaded: function () {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.superjianking.com/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://npm.elemecdn.com/twikoo@1.6.16/dist/twikoo.all.min.js').then(runFn)
+  }
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.superjianking.com/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://npm.elemecdn.com/twikoo@1.6.16/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick}</span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "2548092637@qq.com";</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script>// 初始化函数
+let rm = {};
+
+//禁止图片与超链接拖拽
+let aElements = document.getElementsByTagName("a");
+for (let i = 0; i < aElements.length; i++) {
+  aElements[i].setAttribute("draggable", "false");
+  let imgElements = aElements[i].getElementsByTagName("img");
+  for (let j = 0; j < imgElements.length; j++) {
+    imgElements[j].setAttribute("draggable", "false");
+  }
+}
+
+// 显示菜单
+rm.showRightMenu = function (isTrue, x = 0, y = 0) {
+  console.info(x, y)
+  let rightMenu = document.getElementById("rightMenu");
+  rightMenu.style.top = x + "px";
+  rightMenu.style.left = y + "px";
+  if (isTrue) {
+    rightMenu.style.display = "block";
+    stopMaskScroll();
+  } else {
+    rightMenu.style.display = "none";
+  }
+};
+
+// 隐藏菜单
+rm.hideRightMenu = function () {
+  rm.showRightMenu(false);
+  let rightMenuMask = document.querySelector("#rightmenu-mask");
+  rightMenuMask.style.display = "none";
+};
+
+// 尺寸
+let rmWidth = document.getElementById("rightMenu").offsetWidth;
+let rmHeight = document.getElementById("rightMenu").offsetHeight;
+
+// 重新定义尺寸
+rm.reloadrmSize = function () {
+  rightMenu.style.visibility = "hidden";
+  rightMenu.style.display = "block";
+  // 获取宽度和高度
+  rmWidth = document.getElementById("rightMenu").offsetWidth;
+  rmHeight = document.getElementById("rightMenu").offsetHeight;
+  rightMenu.style.visibility = "visible";
+};
+
+// 获取点击的href
+let domhref = "";
+let domImgSrc = "";
+let globalEvent = null;
+
+var oncontextmenuFunction = function (event) {
+  if (document.body.clientWidth > 768) {
+    let pageX = event.clientX + 10; //加10是为了防止显示时鼠标遮在菜单上
+    let pageY = event.clientY;
+
+    //其他额外菜单
+    const $rightMenuOther = document.querySelector(".rightMenuOther");
+    const $rightMenuPlugin = document.querySelector(".rightMenuPlugin");
+    const $rightMenuCopyText = document.querySelector("#menu-copytext");
+    const $rightMenuPasteText = document.querySelector("#menu-pastetext");
+    const $rightMenuCommentText = document.querySelector("#menu-commenttext");
+    const $rightMenuNewWindow = document.querySelector("#menu-newwindow");
+    const $rightMenuNewWindowImg = document.querySelector("#menu-newwindowimg");
+    const $rightMenuCopyLink = document.querySelector("#menu-copylink");
+    const $rightMenuCopyImg = document.querySelector("#menu-copyimg");
+    const $rightMenuDownloadImg = document.querySelector("#menu-downloadimg");
+    const $rightMenuSearch = document.querySelector("#menu-search");
+    const $rightMenuSearchBaidu = document.querySelector("#menu-searchBaidu");
+    const $rightMenuMusicToggle = document.querySelector("#menu-music-toggle");
+    const $rightMenuMusicBack = document.querySelector("#menu-music-back");
+    const $rightMenuMusicForward = document.querySelector("#menu-music-forward");
+    const $rightMenuMusicPlaylist = document.querySelector("#menu-music-playlist");
+    const $rightMenuMusicCopyMusicName = document.querySelector("#menu-music-copyMusicName");
+
+    let href = event.target.href;
+    let imgsrc = event.target.currentSrc;
+
+    // 判断模式 扩展模式为有事件
+    let pluginMode = false;
+    $rightMenuOther.style.display = "block";
+    globalEvent = event;
+
+    // 检查是否需要复制 是否有选中文本
+    if (selectTextNow && window.getSelection()) {
+      pluginMode = true;
+      $rightMenuCopyText.style.display = "block";
+      $rightMenuCommentText.style.display = "block";
+      $rightMenuSearch.style.display = "block";
+      $rightMenuSearchBaidu.style.display = "block";
+    } else {
+      $rightMenuCopyText.style.display = "none";
+      $rightMenuCommentText.style.display = "none";
+      $rightMenuSearchBaidu.style.display = "none";
+      $rightMenuSearch.style.display = "none";
+    }
+
+    //检查是否右键点击了链接a标签
+    if (href) {
+      pluginMode = true;
+      $rightMenuNewWindow.style.display = "block";
+      $rightMenuCopyLink.style.display = "block";
+      domhref = href;
+    } else {
+      $rightMenuNewWindow.style.display = "none";
+      $rightMenuCopyLink.style.display = "none";
+    }
+
+    //检查是否需要复制图片
+    if (imgsrc) {
+      pluginMode = true;
+      $rightMenuCopyImg.style.display = "block";
+      $rightMenuDownloadImg.style.display = "block";
+      $rightMenuNewWindowImg.style.display = "block";
+      document.getElementById("rightMenu").style.width="12rem"
+      domImgSrc = imgsrc;
+    } else {
+      $rightMenuCopyImg.style.display = "none";
+      $rightMenuDownloadImg.style.display = "none";
+      $rightMenuNewWindowImg.style.display = "none";
+    }
+
+    // 判断是否为输入框
+    if (event.target.tagName.toLowerCase() === "input" || event.target.tagName.toLowerCase() === "textarea") {
+      pluginMode = true;
+      $rightMenuPasteText.style.display = "block";
+    } else {
+      $rightMenuPasteText.style.display = "none";
+    }
+    const navMusicEl = document.querySelector("#nav-music");
+    //判断是否是音乐
+    if (navMusicEl && navMusicEl.contains(event.target)) {
+      pluginMode = true;
+      $rightMenuMusicToggle.style.display = "block";
+      $rightMenuMusicBack.style.display = "block";
+      $rightMenuMusicForward.style.display = "block";
+      $rightMenuMusicPlaylist.style.display = "block";
+      $rightMenuMusicCopyMusicName.style.display = "block";
+    } else {
+      $rightMenuMusicToggle.style.display = "none";
+      $rightMenuMusicBack.style.display = "none";
+      $rightMenuMusicForward.style.display = "none";
+      $rightMenuMusicPlaylist.style.display = "none";
+      $rightMenuMusicCopyMusicName.style.display = "none";
+    }
+
+    // 如果不是扩展模式则隐藏扩展模块
+    if (pluginMode) {
+      $rightMenuOther.style.display = "none";
+      $rightMenuPlugin.style.display = "block";
+    } else {
+      $rightMenuPlugin.style.display = "none";
+    }
+
+    rm.reloadrmSize();
+
+    // 鼠标默认显示在鼠标右下方，当鼠标靠右或靠下时，将菜单显示在鼠标左方\上方
+    if (pageX + rmWidth > window.innerWidth) {
+      pageX -= rmWidth + 10;
+    }
+    if (pageY + rmHeight > window.innerHeight) {
+      pageY -= pageY + rmHeight - window.innerHeight;
+    }
+
+    rm.showRightMenu(true, pageY, pageX);
+    document.getElementById("rightmenu-mask").style.display = "flex";
+    return false;
+  }
+};
+
+// 监听右键初始化
+window.oncontextmenu = oncontextmenuFunction
+
+// 下载图片状态
+rm.downloadimging = false;
+
+// 复制图片到剪贴板
+rm.writeClipImg = function (imgsrc) {
+  console.log("按下复制");
+  rm.hideRightMenu();
+  anzhiyu.snackbarShow("正在下载中，请稍后", false, 10000);
+  if (rm.downloadimging == false) {
+    rm.downloadimging = true;
+    setTimeout(function () {
+      copyImage(imgsrc);
+      anzhiyu.snackbarShow("复制成功！图片已添加盲水印，请遵守版权协议");
+      rm.downloadimging = false;
+    }, "10000");
+  }
+};
+
+function imageToBlob(imageURL) {
+  const img = new Image();
+  const c = document.createElement("canvas");
+  const ctx = c.getContext("2d");
+  img.crossOrigin = "";
+  img.src = imageURL;
+  return new Promise(resolve => {
+    img.onload = function () {
+      c.width = this.naturalWidth;
+      c.height = this.naturalHeight;
+      ctx.drawImage(this, 0, 0);
+      c.toBlob(
+        blob => {
+          // here the image is a blob
+          resolve(blob);
+        },
+        "image/png",
+        0.75
+      );
+    };
+  });
+}
+
+async function copyImage(imageURL) {
+  const blob = await imageToBlob(imageURL);
+  const item = new ClipboardItem({ "image/png": blob });
+  navigator.clipboard.write([item]);
+}
+
+rm.copyUrl = function (id) {
+  const input = document.createElement("input"); // Create a new <input> element
+  input.id = "copyVal"; // Set the id of the new element to "copyVal"
+  document.body.appendChild(input); // Append the new element to the end of the <body> element
+  
+  const text = id;
+  input.value = text;
+  input.select();
+  input.setSelectionRange(0, input.value.length);
+  document.execCommand("copy");
+  
+  input.remove(); // Remove the <input> element from the DOM
+};
+
+function stopMaskScroll() {
+  if (document.getElementById("rightmenu-mask")) {
+    let xscroll = document.getElementById("rightmenu-mask");
+    xscroll.addEventListener(
+      "mousewheel",
+      function (e) {
+        //阻止浏览器默认方法
+        rm.hideRightMenu();
+        // e.preventDefault();
+      },
+      false
+    );
+  }
+  if (document.getElementById("rightMenu")) {
+    let xscroll = document.getElementById("rightMenu");
+    xscroll.addEventListener(
+      "mousewheel",
+      function (e) {
+        //阻止浏览器默认方法
+        rm.hideRightMenu();
+        // e.preventDefault();
+      },
+      false
+    );
+  }
+}
+
+rm.rightmenuCopyText = function (txt) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(txt);
+  }
+  rm.hideRightMenu();
+};
+
+rm.copyPageUrl = function () {
+  var url = window.location.href;
+  rm.copyUrl(url);
+  anzhiyu.snackbarShow("复制本页链接地址成功", false, 2000);
+  rm.hideRightMenu();
+};
+
+rm.sharePage = function () {
+  var content = window.location.href;
+  rm.copyUrl(url);
+  anzhiyu.snackbarShow("复制本页链接地址成功", false, 2000);
+  rm.hideRightMenu();
+};
+
+// 复制当前选中文本
+var selectTextNow = "";
+document.onmouseup = document.ondblclick = selceText;
+
+function selceText() {
+  var txt;
+  if (document.selection) {
+    txt = document.selection.createRange().text;
+  } else {
+    txt = window.getSelection().toString();
+  }
+  selectTextNow = txt !== "" ? txt : "";
+}
+
+// 读取剪切板
+rm.readClipboard = function () {
+  if (navigator.clipboard) {
+    navigator.clipboard.readText().then(clipText => rm.insertAtCaret(globalEvent.target, clipText));
+  }
+};
+
+// 粘贴文本到焦点
+rm.insertAtCaret = function (elemt, value) {
+  const startPos = elemt.selectionStart,
+    endPos = elemt.selectionEnd;
+  if (document.selection) {
+    elemt.focus();
+    var sel = document.selection.createRange();
+    sel.text = value;
+    elemt.focus();
+  } else {
+    if (startPos || startPos == "0") {
+      var scrollTop = elemt.scrollTop;
+      elemt.value = elemt.value.substring(0, startPos) + value + elemt.value.substring(endPos, elemt.value.length);
+      elemt.focus();
+      elemt.selectionStart = startPos + value.length;
+      elemt.selectionEnd = startPos + value.length;
+      elemt.scrollTop = scrollTop;
+    } else {
+      elemt.value += value;
+      elemt.focus();
+    }
+  }
+};
+
+//粘贴文本
+rm.pasteText = function () {
+  const result = rm.readClipboard() || "";
+  rm.hideRightMenu();
+};
+
+//引用到评论
+rm.rightMenuCommentText = function (txt) {
+  rm.hideRightMenu();
+  const postCommentDom = document.getElementById("post-comment");
+  var domTop = postCommentDom.offsetTop;
+  window.scrollTo(0, domTop - 80);
+  if (txt == "undefined" || txt == "null") txt = "好棒！";
+  function setText() {
+    setTimeout(() => {
+      var input = document.getElementsByClassName("el-textarea__inner")[0];
+      if (!input) setText();
+      let evt = document.createEvent("HTMLEvents");
+      evt.initEvent("input", true, true);
+      let inputValue = replaceAll(txt, "\n", "\n> ");
+      input.value = "> " + inputValue + "\n\n";
+      input.dispatchEvent(evt);
+      input.focus();
+      input.setSelectionRange(-1, -1);
+      if (document.getElementById("comment-tips")) {
+        document.getElementById("comment-tips").classList.add("show");
+      }
+    }, 100);
+  }
+  setText();
+};
+
+//替换所有内容
+function replaceAll(string, search, replace) {
+  return string.split(search).join(replace);
+}
+
+// 百度搜索
+rm.searchBaidu = function () {
+  anzhiyu.snackbarShow("即将跳转到百度搜索", false, 2000);
+  setTimeout(function () {
+    window.open("https://www.baidu.com/s?wd=" + selectTextNow);
+  }, "2000");
+  rm.hideRightMenu();
+};
+
+//分享链接
+rm.copyLink = function () {
+  rm.rightmenuCopyText(domhref);
+  anzhiyu.snackbarShow("已复制链接地址");
+};
+
+function addRightMenuClickEvent() {
+  // 添加点击事件
+  document.getElementById("menu-backward").addEventListener("click", function () {
+  window.history.back();
+    rm.hideRightMenu();
+  });
+
+  document.getElementById("menu-forward").addEventListener("click", function () {
+    window.history.forward();
+    rm.hideRightMenu();
+  });
+
+  document.getElementById("menu-refresh").addEventListener("click", function () {
+    window.location.reload();
+  });
+
+  document.getElementById("menu-top").addEventListener("click", function () {
+    anzhiyu.scrollToDest(0, 500);
+    rm.hideRightMenu();
+  });
+
+  const menuLinks = document.querySelectorAll(".menu-link");
+  menuLinks.forEach(function (link) {
+    link.addEventListener("click", rm.hideRightMenu);
+  });
+
+  document.getElementById("menu-darkmode").addEventListener("click", anzhiyu.switchDarkMode);
+
+  document.getElementById("menu-home") && document.getElementById("menu-home").addEventListener("click", function () {
+    window.location.href = window.location.origin;
+  });
+
+  document.getElementById("menu-randomPost").addEventListener("click", function () {
+    toRandomPost();
+  });
+
+  document.getElementById("menu-commentBarrage").addEventListener("click", anzhiyu.switchCommentBarrage);
+
+  document.getElementById("rightmenu-mask").addEventListener("click", rm.hideRightMenu);
+
+  document.getElementById("rightmenu-mask").addEventListener("contextmenu", function (event) {
+    rm.hideRightMenu();
+    event.preventDefault(); // Prevent the default context menu from appearing
+  });
+
+  document.getElementById("menu-copy").addEventListener("click", rm.copyPageUrl);
+
+  document.getElementById("menu-pastetext").addEventListener("click", rm.pasteText);
+
+  document.getElementById("menu-copytext").addEventListener("click", function () {
+    rm.rightmenuCopyText(selectTextNow);
+    anzhiyu.snackbarShow("复制成功，复制和转载请标注本文地址");
+  });
+
+  document.getElementById("menu-commenttext").addEventListener("click", function () {
+    rm.rightMenuCommentText(selectTextNow);
+  });
+
+  document.getElementById("menu-newwindow").addEventListener("click", function () {
+    window.open(domhref);
+    rm.hideRightMenu();
+  });
+
+  document.getElementById("menu-copylink").addEventListener("click", rm.copyLink);
+
+  document.getElementById("menu-downloadimg").addEventListener("click", function () {
+    anzhiyu.downloadImage(domImgSrc, "anzhiyu");
+  });
+
+  document.getElementById("menu-newwindowimg").addEventListener("click", function () {
+    window.open(domImgSrc);
+    rm.hideRightMenu();
+  });
+
+  document.getElementById("menu-copyimg").addEventListener("click", function () {
+    rm.writeClipImg(domImgSrc);
+  });
+
+  document.getElementById("menu-searchBaidu").addEventListener("click", rm.searchBaidu);
+
+  //音乐
+  document.getElementById("menu-music-toggle").addEventListener("click", anzhiyu.musicToggle);
+
+  document.getElementById("menu-music-back").addEventListener("click", anzhiyu.musicSkipBack);
+
+  document.getElementById("menu-music-forward").addEventListener("click", anzhiyu.musicSkipForward);
+
+  document.getElementById("menu-music-copyMusicName").addEventListener("click", function () {
+    rm.rightmenuCopyText(anzhiyu.musicGetName());
+    anzhiyu.snackbarShow("复制歌曲名称成功", false, 3000);
+  });
+
+}
+
+addRightMenuClickEvent();</script><script data-pjax>var themeColorMeta = document.querySelector('meta[name="theme-color"]');
+var pageHeaderEl = document.getElementById("page-header");
+var navMusicEl = document.getElementById("nav-music");
+var consoleEl = document.getElementById("console");
+// 已随机的歌曲
+var selectRandomSong = [];
+// 音乐默认声音大小
+var musicVolume = 0.8;
+// 是否切换了周杰伦音乐列表
+var changeMusicListFlag = false;
+// 当前默认播放列表
+var defaultPlayMusicList = [];
+
+document.getElementById("page-name").innerText = document.title.split(" | 安知鱼")[0];
+anzhiyu.initIndexEssay();
+anzhiyu.changeTimeInEssay();
+anzhiyu.removeBodyPaceClass();
+anzhiyu.qrcodeCreate();
+anzhiyu.changeTimeInAlbumDetail();
+anzhiyu.reflashEssayWaterFall();
+anzhiyu.sayhi();
+anzhiyu.stopImgRightDrag();
+anzhiyu.addNavBackgroundInit();
+anzhiyu.setValueToBodyType();
+anzhiyu.catalogActive();
+anzhiyu.tagsPageActive();
+anzhiyu.categoriesBarActive();
+anzhiyu.topCategoriesBarScroll();
+
+anzhiyu.getCustomPlayList();
+anzhiyu.addEventListenerConsoleMusicList(false);
+setTimeout(() => {
+  if (typeof addFriendLinksInFooter === "function") {
+    addFriendLinksInFooter();
+  }
+}, 200)</script><script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script>LA.init({id: "3EkUmU11UFr8JfAJ", ck: "3EkUmU11UFr8JfAJ"});
+new LingQue.Monitor().init({id: "305612", sendSuspicious:true});</script><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.1.0/icon/ali_iconfont_css.css"><script src="https://npm.elemecdn.com/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://npm.elemecdn.com/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://npm.elemecdn.com/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://npm.elemecdn.com/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
